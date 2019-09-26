@@ -10,36 +10,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import org.bukkit.Achievement;
-import org.bukkit.Effect;
-import org.bukkit.EntityEffect;
-import org.bukkit.GameMode;
-import org.bukkit.Instrument;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Note;
-import org.bukkit.Particle;
-import org.bukkit.Server;
-import org.bukkit.Sound;
-import org.bukkit.SoundCategory;
-import org.bukkit.Statistic;
-import org.bukkit.WeatherType;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Villager;
+import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -56,11 +38,15 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
+import org.bukkit.entity.memory.MemoryKey;
+import org.bukkit.util.RayTraceResult;
 
 @SuppressWarnings("deprecation")
 public class FakePlayer implements Player {
@@ -93,11 +79,6 @@ public class FakePlayer implements Player {
 
 			@Override
 			public void setMaxStackSize(int size) {
-			}
-
-			@Override
-			public String getName() {
-				return null;
 			}
 
 			@Override
@@ -225,11 +206,6 @@ public class FakePlayer implements Player {
 
 			@Override
 			public List<HumanEntity> getViewers() {
-				return null;
-			}
-
-			@Override
-			public String getTitle() {
 				return null;
 			}
 
@@ -455,6 +431,26 @@ public class FakePlayer implements Player {
 	}
 
 	@Override
+	public boolean discoverRecipe(NamespacedKey namespacedKey) {
+		return false;
+	}
+
+	@Override
+	public int discoverRecipes(Collection<NamespacedKey> collection) {
+		return 0;
+	}
+
+	@Override
+	public boolean undiscoverRecipe(NamespacedKey namespacedKey) {
+		return false;
+	}
+
+	@Override
+	public int undiscoverRecipes(Collection<NamespacedKey> collection) {
+		return 0;
+	}
+
+	@Override
 	public double getEyeHeight() {
 		return 0;
 	}
@@ -489,6 +485,26 @@ public class FakePlayer implements Player {
 
 	@Override
 	public List<Block> getLastTwoTargetBlocks(Set<Material> transparent, int maxDistance) {
+		return null;
+	}
+
+	@Override
+	public Block getTargetBlockExact(int i) {
+		return null;
+	}
+
+	@Override
+	public Block getTargetBlockExact(int i, FluidCollisionMode fluidCollisionMode) {
+		return null;
+	}
+
+	@Override
+	public RayTraceResult rayTraceBlocks(double v) {
+		return null;
+	}
+
+	@Override
+	public RayTraceResult rayTraceBlocks(double v, FluidCollisionMode fluidCollisionMode) {
 		return null;
 	}
 
@@ -667,6 +683,16 @@ public class FakePlayer implements Player {
 	}
 
 	@Override
+	public <T> T getMemory(MemoryKey<T> memoryKey) {
+		return null;
+	}
+
+	@Override
+	public <T> void setMemory(MemoryKey<T> memoryKey, T t) {
+
+	}
+
+	@Override
 	public AttributeInstance getAttribute(Attribute attribute) {
 
 		return null;
@@ -696,6 +722,11 @@ public class FakePlayer implements Player {
 	@Override
 	public World getWorld() {
 		return location.getWorld();
+	}
+
+	@Override
+	public void setRotation(float v, float v1) {
+
 	}
 
 	@Override
@@ -1890,6 +1921,11 @@ public class FakePlayer implements Player {
 	}
 
 	@Override
+	public BoundingBox getBoundingBox() {
+		return null;
+	}
+
+	@Override
 	public boolean removePassenger(Entity arg0) {
 		return false;
 	}
@@ -1907,6 +1943,11 @@ public class FakePlayer implements Player {
 	@Override
 	public AdvancementProgress getAdvancementProgress(Advancement arg0) {
 		return null;
+	}
+
+	@Override
+	public int getClientViewDistance() {
+		return 0;
 	}
 
 	@Override
@@ -1946,6 +1987,16 @@ public class FakePlayer implements Player {
 
 	@Override
 	public PistonMoveReaction getPistonMoveReaction() {
+		return null;
+	}
+
+	@Override
+	public BlockFace getFacing() {
+		return null;
+	}
+
+	@Override
+	public Pose getPose() {
 		return null;
 	}
 
@@ -2000,7 +2051,28 @@ public class FakePlayer implements Player {
 	public void setPlayerListHeaderFooter(String arg0, String arg1) {
 	}
 
+
+	@Override
+	public Location getBedLocation() {
+		return null;
+	}
+
+	@Override
+	public void wakeup(boolean setSpawnLocation) {
+
+	}
+
+	@Override
+	public boolean sleep(Location location, boolean force) {
+		return false;
+	}
+
 	@Override
 	public void updateCommands() {
+	}
+
+	@Override
+	public PersistentDataContainer getPersistentDataContainer() {
+		return null;
 	}
 }

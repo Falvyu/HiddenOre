@@ -44,3 +44,6 @@ target/
 # STS (Spring Tool Suite)
 .springBeans
 /target/
+
+# IntelliJ IDEA
+.idea
