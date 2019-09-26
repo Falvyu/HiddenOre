@@ -1,10 +1,12 @@
-package com.github.devotedmc.hiddenore.listeners;
+package com.github.devotedmc.hiddenore;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import com.github.devotedmc.hiddenore.listeners.BlockBreakListener;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -15,6 +17,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkPopulateEvent;
+import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.ItemStack;
 
 import com.github.devotedmc.hiddenore.BlockConfig;
@@ -26,7 +29,7 @@ import com.github.devotedmc.hiddenore.HiddenOre;
  * 
  * @author ProgrammerDan
  */
-public class WorldGenerationListener implements Listener {
+public class OreStripper extends BlockPopulator {
 
 	Set<Material> toReplace = null;
 	Material replaceWith = null;
@@ -49,7 +52,7 @@ public class WorldGenerationListener implements Listener {
 	 * @param config The world-specific config.
 	 * 
 	 */
-	public WorldGenerationListener(ConfigurationSection config) {
+	public OreStripper(ConfigurationSection config) {
 		if (config.contains("world")) {
 			worldName = config.getString("world");
 		}
@@ -79,42 +82,32 @@ public class WorldGenerationListener implements Listener {
 			replaceWith = Material.matchMaterial(with);
 		}
 	}
-	
+
 	/**
 	 * Reviews the chunk line by line and replaces all instances of toReplace with replaceWith.
 	 * This is configured world to world.
-	 * 
-	 * Note that by contract, this is called for a single chunk but the generation can occur
-	 * for surrounding chunks, if they are not yet populated.
-	 * 
-	 * @param event ChunkPopulateEvent covering the chunk 
+	 * @param world world the chunk is in
+	 * @param random unused
+	 * @param chunk chunk that will be populated
 	 */
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void postGenerationOreClear(ChunkPopulateEvent event) {
-		if (toReplace == null || replaceWith == null || (worldName == null && worldUUID == null) ) {
-			return;
-		}
-		
-		Chunk chunk = event.getChunk();
-		
-		World world = chunk.getWorld();
-		
+	@Override
+	public void populate(World world, Random random, Chunk chunk) {
 		if (!world.getName().equalsIgnoreCase(worldName) && !world.getUID().equals(worldUUID)) {
 			return;
 		}
-		
+
 		clear(chunk);
-		
+
 		int x = chunk.getX();
 		int z = chunk.getZ();
-		
+
 		// check adjacent chunks, which by contract
 		// might have been updated.
 		if (world.isChunkLoaded(x - 1, z) ) {
 			chunk = world.getChunkAt(x - 1, z);
 			clear(chunk);
 		}
-		
+
 		if (world.isChunkLoaded(x + 1, z) ) {
 			chunk = world.getChunkAt(x + 1, z);
 			clear(chunk);
@@ -187,4 +180,6 @@ public class WorldGenerationListener implements Listener {
 			}
 		}
 	}
+
+
 }
